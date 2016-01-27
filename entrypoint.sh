@@ -22,7 +22,7 @@ usage () {
 sed \
 	-e "s,\${AWS_S3_BUCKET},${AWS_S3_BUCKET}," \
 	-e "s,\${AWS_S3_PREFIX},${AWS_S3_PREFIX}," \
-	-e "s,\${AWS_S3_REGION},${AWS_REGION}," \
+	-e "s,\${AWS_S3_REGION},${AWS_S3_REGION}," \
 	-e "s,\${AWS_KINESIS_REGION},${AWS_KINESIS_REGION}," \
 	-e "s,\${AWS_KINESIS_STREAM},${AWS_KINESIS_STREAM}," \
 	/config/logstash.conf.tpl > /config/logstash.conf

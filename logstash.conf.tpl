@@ -135,8 +135,10 @@ filter {
 		gsub => [ "cs-uri-query", "%27", "'" ]
 	}
 
-	json {
-		source => "cs-uri-query"
+	if ["cs-uri-query" != "-"] {
+		json {
+			source => "cs-uri-query"
+		}
 	}
 
 
