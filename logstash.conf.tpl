@@ -1,6 +1,8 @@
 input {
 	s3 {
 		bucket => "${AWS_S3_BUCKET}"
+		backup_to_bucket => "${AWS_S3_BUCKET}"
+		backup_add_prefix => "Processed/"
 		prefix => "${AWS_S3_PREFIX}"
 		region_endpoint => "${AWS_S3_REGION}"
 		type => "frontend"
@@ -36,41 +38,15 @@ filter {
 				"ssl-cipher",
 				"x-edge-response-result-type"
 			]
+
+			add_field => [ "timestamp", "%{date} %{time}" ]
 	}
 
-	mutate {
-		remove_field => ["@timestamp"]
-	}
-
-	# Take care of dates
-	mutate {
-		add_field => [ "@timestamp.generated", "%{date} %{time}" ]
-	}
-
+	# Replace: Processed vs Generated timestamp
 	date {
-		match => [ "@timestamp.generated", "yy-MM-dd HH:mm:ss" ]
-		target => "@timestamp.generated"
+		match => [ "timestamp", "yy-MM-dd HH:mm:ss" ]
 		timezone => "UTC"
 	}
-
-	ruby {
-		code => "event['@timestamp.processed'] = Time.new.to_i"
-	}
-
-	date {
-		match => [ "@timestamp.processed", "UNIX" ]
-		target => "@timestamp.processed"
-	}
-
-	# Create a hash w/ the dates
-	de_dot {
-		fields => ["@timestamp.generated", "@timestamp.processed"]
-		nested => true
-	}
-
-
-
-
 
 
 	# Two pass url decoding ... sigh
