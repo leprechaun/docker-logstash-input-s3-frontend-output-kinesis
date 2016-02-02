@@ -111,10 +111,8 @@ filter {
 		gsub => [ "cs-uri-query", "%27", "'" ]
 	}
 
-	if ["cs-uri-query" != "-"] {
-		json {
-			source => "cs-uri-query"
-		}
+	json {
+		source => "cs-uri-query"
 	}
 
 
