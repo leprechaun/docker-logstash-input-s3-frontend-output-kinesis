@@ -19,10 +19,14 @@ usage () {
 [[ -z "$AWS_KINESIS_REGION" ]] && usage AWS_KINESIS_REGION && exit
 [[ -z "$AWS_KINESIS_STREAM" ]] && usage AWS_KINESIS_STREAM && exit
 
+# it's safe to delete because we backup.
+export AWS_S3_DELETE=${AWS_S3_DELETE:-true}
+
 sed \
 	-e "s,\${AWS_S3_BUCKET},${AWS_S3_BUCKET}," \
 	-e "s,\${AWS_S3_PREFIX},${AWS_S3_PREFIX}," \
 	-e "s,\${AWS_S3_REGION},${AWS_S3_REGION}," \
+	-e "s,\${AWS_S3_DELETE},${AWS_S3_DELETE}," \
 	-e "s,\${AWS_KINESIS_REGION},${AWS_KINESIS_REGION}," \
 	-e "s,\${AWS_KINESIS_STREAM},${AWS_KINESIS_STREAM}," \
 	/config/logstash.conf.tpl > /config/logstash.conf

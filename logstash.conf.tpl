@@ -6,6 +6,7 @@ input {
 		prefix => "${AWS_S3_PREFIX}"
 		region_endpoint => "${AWS_S3_REGION}"
 		type => "frontend"
+		delete => "${AWS_S3_DELETE}"
 	}
 }
 
